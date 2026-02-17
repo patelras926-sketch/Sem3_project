@@ -142,7 +142,6 @@ a {
   /* Pill shape */
   padding: 0.5rem 1.5rem;
   transition: all 0.3s ease;
-  position: sticky;
   top: 1rem;
   z-index: 1000;
 }
