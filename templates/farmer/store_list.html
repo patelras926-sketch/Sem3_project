@@ -1,0 +1,57 @@
+{% extends "farmer/base_farmer.html" %}
+{% block title %}Farm Store – FarmIntel{% endblock %}
+{% block content %}
+<h2 class="mb-4">Farm Store</h2>
+<div class="row mb-3">
+  <div class="col-md-6">
+    <input type="text" id="searchProduct" class="form-control" placeholder="Search products">
+  </div>
+  <div class="col-md-4">
+    <select id="filterCategory" class="form-select">
+      <option value="">All Categories</option>
+      <option value="Fertilizers">Fertilizers</option>
+      <option value="Seeds">Seeds</option>
+      <option value="Pesticides">Pesticides</option>
+      <option value="Equipment">Equipment</option>
+      <option value="Tools">Tools</option>
+    </select>
+  </div>
+</div>
+<div class="row g-3" id="productCards">
+  {% for p in products %}
+  <div class="col-sm-6 col-lg-4 product-card" data-name="{{ p.name|lower }}" data-category="{{ p.category or '' }}">
+    <div class="card h-100 shadow-sm">
+      {% if p.image_path %}
+        <img src="{{ url_for('static', filename=p.image_path) }}" class="card-img-top" alt="{{ p.name }}" style="height:180px;object-fit:cover" onerror="this.src='https://via.placeholder.com/300x180?text=Product'">
+      {% else %}
+        <img src="https://via.placeholder.com/300x180?text={{ p.name }}" class="card-img-top" alt="{{ p.name }}" style="height:180px;object-fit:cover">
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">{{ p.name }}</h5>
+        <p class="mb-1 small text-muted">{{ p.category }} {% if p.brand %}• {{ p.brand }}{% endif %}</p>
+        <p class="mb-2">₹{{ "%.2f"|format(p.price) }}{% if p.discount %} <span class="text-danger">-{{ p.discount }}%</span>{% endif %}</p>
+        <a href="{{ url_for('store.product_detail', product_id=p.id) }}" class="btn btn-success btn-sm">View & Add to Cart</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<script>
+(function(){
+  var cards = document.querySelectorAll('.product-card');
+  var search = document.getElementById('searchProduct');
+  var cat = document.getElementById('filterCategory');
+  function filter(){
+    var s = (search.value || '').toLowerCase();
+    var c = cat.value;
+    cards.forEach(function(el){
+      var nameOk = (el.dataset.name || '').indexOf(s) >= 0;
+      var catOk = !c || el.dataset.category === c;
+      el.style.display = (nameOk && catOk) ? '' : 'none';
+    });
+  }
+  search.addEventListener('input', filter);
+  cat.addEventListener('change', filter);
+})();
+</script>
+{% endblock %}

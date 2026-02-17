@@ -1,0 +1,86 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}{{ 'Edit' if crop else 'Add' }} Crop – FarmIntel Admin{% endblock %}
+{% block content %}
+<h2 class="mb-4">{{ 'Edit' if crop else 'Add' }} Crop</h2>
+<form method="post" action="{{ url_for('crops.admin_edit', crop_id=crop.id) if crop else url_for('crops.admin_add') }}" enctype="multipart/form-data">
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Crop Name *</label>
+      <input type="text" name="name" class="form-control" value="{{ crop.name if crop else '' }}" required>
+    </div>
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Category</label>
+      <select name="category" class="form-select">
+        <option value="Spices" {{ 'selected' if crop and crop.category == 'Spices' else '' }}>Spices</option>
+        <option value="Vegetables" {{ 'selected' if crop and crop.category == 'Vegetables' else '' }}>Vegetables</option>
+        <option value="Pulses" {{ 'selected' if crop and crop.category == 'Pulses' else '' }}>Pulses</option>
+        <option value="Oil Seeds" {{ 'selected' if crop and crop.category == 'Oil Seeds' else '' }}>Oil Seeds</option>
+        <option value="Fruits" {{ 'selected' if crop and crop.category == 'Fruits' else '' }}>Fruits</option>
+      </select>
+    </div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Crop Images (multiple)</label>
+    <input type="file" name="crop_images" class="form-control" accept="image/*" multiple>
+    {% if images %}<p class="small text-muted">Current: {{ images|length }} image(s). New uploads will be added.</p>{% endif %}
+  </div>
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <label class="form-label">Duration</label>
+      <input type="text" name="duration" class="form-control" value="{{ crop.duration if crop else '' }}">
+    </div>
+    <div class="col-md-4 mb-3">
+      <label class="form-label">Average Price</label>
+      <input type="number" step="0.01" name="average_price" class="form-control" value="{{ crop.average_price if crop else '' }}">
+    </div>
+    <div class="col-md-4 mb-3">
+      <label class="form-label">Current Market Price</label>
+      <input type="number" step="0.01" name="market_price" class="form-control" value="{{ crop.market_price if crop else '' }}">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <label class="form-label">Pesticides Name</label>
+      <input type="text" name="pesticides_name" class="form-control" value="{{ crop.pesticides_name if crop else '' }}">
+    </div>
+    <div class="col-md-4 mb-3">
+      <label class="form-label">Best Seeds Name</label>
+      <input type="text" name="best_seeds_name" class="form-control" value="{{ crop.best_seeds_name if crop else '' }}">
+    </div>
+    <div class="col-md-4 mb-3">
+      <label class="form-label">Fertilizer Name</label>
+      <input type="text" name="fertilizer_name" class="form-control" value="{{ crop.fertilizer_name if crop else '' }}">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <label class="form-label">Season</label>
+      <select name="season" class="form-select">
+        <option value="Kharif" {{ 'selected' if crop and crop.season == 'Kharif' else '' }}>Kharif</option>
+        <option value="Rabi" {{ 'selected' if crop and crop.season == 'Rabi' else '' }}>Rabi</option>
+        <option value="Zaid" {{ 'selected' if crop and crop.season == 'Zaid' else '' }}>Zaid</option>
+        <option value="All" {{ 'selected' if crop and crop.season == 'All' else '' }}>All</option>
+      </select>
+    </div>
+    <div class="col-md-4 mb-3">
+      <label class="form-label">Soil Type</label>
+      <input type="text" name="soil_type" class="form-control" value="{{ crop.soil_type if crop else '' }}" placeholder="e.g. કાળી, લાલ, રેતાળી">
+    </div>
+    <div class="col-md-4 mb-3">
+      <label class="form-label">India Demand</label>
+      <select name="india_demand" class="form-select">
+        <option value="">–</option>
+        <option value="Low" {{ 'selected' if crop and crop.india_demand == 'Low' else '' }}>Low</option>
+        <option value="Medium" {{ 'selected' if crop and crop.india_demand == 'Medium' else '' }}>Medium</option>
+        <option value="High" {{ 'selected' if crop and crop.india_demand == 'High' else '' }}>High</option>
+      </select>
+    </div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Crop Description</label>
+    <textarea name="description" class="form-control" rows="3">{{ crop.description if crop else '' }}</textarea>
+  </div>
+  <button type="submit" class="btn btn-success">{{ 'Update' if crop else 'Add' }} Crop</button>
+  <a href="{{ url_for('crops.admin_list') }}" class="btn btn-outline-secondary">Cancel</a>
+</form>
+{% endblock %}

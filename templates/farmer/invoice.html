@@ -1,0 +1,29 @@
+{% extends "farmer/base_farmer.html" %}
+{% block title %}Invoice #{{ order.id }} – FarmIntel{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title">Invoice</h3>
+    <p><strong>Order ID:</strong> {{ order.id }}</p>
+    <p><strong>Date & Time:</strong> {{ order.order_date }}</p>
+    <table class="table table-bordered mt-3">
+      <thead><tr><th>Product</th><th>Qty</th><th>Price/unit</th><th>Subtotal</th></tr></thead>
+      <tbody>
+      {% for it in items %}
+      <tr>
+        <td>{{ it.name }}</td>
+        <td>{{ it.quantity }}</td>
+        <td>₹{{ "%.2f"|format(it.price_per_unit) }}</td>
+        <td>₹{{ "%.2f"|format(it.price_per_unit * it.quantity) }}</td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    <p class="mb-0"><strong>Subtotal:</strong> ₹{{ "%.2f"|format(order.subtotal) }}</p>
+    <p class="mb-0"><strong>GST (5%):</strong> ₹{{ "%.2f"|format(order.gst) }}</p>
+    <p class="mb-0"><strong>Total Amount:</strong> ₹{{ "%.2f"|format(order.total) }}</p>
+    <hr>
+    <a href="{{ url_for('store.order_history') }}" class="btn btn-outline-primary">Order History</a>
+  </div>
+</div>
+{% endblock %}

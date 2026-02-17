@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="auth-page">
+  <div class="card auth-card col-11 col-md-6 col-lg-4">
+    <div class="card-body">
+      <h1 class="auth-logo text-center">🌾 FarmIntel</h1>
+      <p class="auth-subtitle text-center">Farmer Portal – Smart Farming & Crop Intelligence</p>
+      <p class="auth-note text-center">તમારું એકાઉન્ટ લોગિન કરો અને સ્માર્ટ ખેતી શરૂ કરો 🌱</p>
+      <p class="auth-note text-center mb-3">FarmIntel તમને યોગ્ય પાક, બજાર ભાવ અને સરકારની યોજનાઓ સૂચવે છે.</p>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}{% for c, m in messages %}<div class="alert alert-{{ c }} mb-3">{{ m }}</div>{% endfor %}{% endif %}
+      {% endwith %}
+      <form method="post" action="{{ url_for('auth.farmer_login') }}" novalidate>
+        <div class="mb-3">
+          <label class="form-label">Farmer ID / Email / Mobile Number</label>
+          <input type="text" name="identifier" class="form-control" required placeholder="ID, email or mobile" autocomplete="username">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" required placeholder="••••••••" minlength="6" autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary-custom">Login</button>
+        <div class="auth-links">
+          <a href="#">Forgot Password?</a><br>
+          <a href="{{ url_for('farmer.signup_page') }}">New Farmer? Sign Up Here</a>
+        </div>
+      </form>
+      <hr class="auth-divider">
+      <p class="auth-switch mb-0"><a href="{{ url_for('admin_routes.admin_login_page') }}">Admin Login</a></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

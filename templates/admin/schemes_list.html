@@ -1,0 +1,25 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Government Schemes – FarmIntel Admin{% endblock %}
+{% block content %}
+<h2 class="mb-4">Government Schemes</h2>
+<p><a href="{{ url_for('schemes.admin_add') }}" class="btn btn-success">+ Add Scheme</a></p>
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead><tr><th>Name</th><th>Type</th><th>Eligible Crop</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>
+    {% for s in schemes %}
+    <tr>
+      <td>{{ s.name }}</td>
+      <td>{{ s.scheme_type }}</td>
+      <td>{{ s.eligible_crop or '–' }}</td>
+      <td><span class="badge bg-{{ 'success' if s.status == 'Active' else 'secondary' }}">{{ s.status }}</span></td>
+      <td>
+        <a href="{{ url_for('schemes.admin_edit', scheme_id=s.id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+        <form method="post" action="{{ url_for('schemes.admin_delete', scheme_id=s.id) }}" class="d-inline" onsubmit="return confirm('Delete this scheme?');"><button type="submit" class="btn btn-sm btn-outline-danger">Delete</button></form>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

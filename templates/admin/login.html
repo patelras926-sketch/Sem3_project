@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="auth-page admin-auth">
+  <div class="card auth-card col-11 col-md-5">
+    <div class="card-body">
+      <h1 class="auth-logo text-center">FarmIntel Admin</h1>
+      <p class="auth-subtitle text-center">System Management & Data Control</p>
+      <p class="auth-note text-center mb-3"><span class="badge bg-warning text-dark">Unauthorized access is prohibited.</span></p>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}{% for c, m in messages %}<div class="alert alert-{{ c }} mb-3">{{ m }}</div>{% endfor %}{% endif %}
+      {% endwith %}
+      <form method="post" action="{{ url_for('auth.admin_login') }}" novalidate>
+        <div class="mb-3">
+          <label class="form-label">Admin Username / Email</label>
+          <input type="text" name="identifier" class="form-control" required placeholder="Username or email" autocomplete="username">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" required minlength="6" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary-custom">Login</button>
+      </form>
+      <hr class="auth-divider">
+      <p class="auth-switch mb-0">
+        <a href="{{ url_for('admin_routes.admin_signup_page') }}">Create Admin Account</a> &nbsp;|&nbsp; <a href="{{ url_for('farmer.login_page') }}">Farmer Login</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

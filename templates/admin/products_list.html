@@ -1,0 +1,28 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Farm Store Products – FarmIntel Admin{% endblock %}
+{% block content %}
+<h2 class="mb-4">Farm Store – Products</h2>
+<p><a href="{{ url_for('store.admin_add') }}" class="btn btn-success">+ Add Product</a></p>
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Brand</th><th>Price</th><th>Discount</th><th>Stock</th><th>Actions</th></tr></thead>
+    <tbody>
+    {% for p in products %}
+    <tr>
+      <td>{% if p.image_path %}<img src="{{ url_for('static', filename=p.image_path) }}" width="50" height="50" style="object-fit:cover" onerror="this.style.display='none'">{% else %}–{% endif %}</td>
+      <td>{{ p.name }}</td>
+      <td>{{ p.category }}</td>
+      <td>{{ p.brand or '–' }}</td>
+      <td>₹{{ "%.2f"|format(p.price) }}</td>
+      <td>{{ p.discount or 0 }}%</td>
+      <td>{{ p.stock }}</td>
+      <td>
+        <a href="{{ url_for('store.admin_edit', product_id=p.id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+        <form method="post" action="{{ url_for('store.admin_delete', product_id=p.id) }}" class="d-inline" onsubmit="return confirm('Delete this product?');"><button type="submit" class="btn btn-sm btn-outline-danger">Delete</button></form>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

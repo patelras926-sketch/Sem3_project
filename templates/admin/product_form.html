@@ -1,0 +1,60 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}{{ 'Edit' if product else 'Add' }} Product – FarmIntel Admin{% endblock %}
+{% block content %}
+<h2 class="mb-4">{{ 'Edit' if product else 'Add' }} Product</h2>
+<form method="post" action="{{ url_for('store.admin_edit', product_id=product.id) if product else url_for('store.admin_add') }}" enctype="multipart/form-data">
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Product Name *</label>
+      <input type="text" name="name" class="form-control" value="{{ product.name if product else '' }}" required>
+    </div>
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Category</label>
+      <select name="category" class="form-select">
+        <option value="Fertilizers" {{ 'selected' if product and product.category == 'Fertilizers' else '' }}>Fertilizers</option>
+        <option value="Seeds" {{ 'selected' if product and product.category == 'Seeds' else '' }}>Seeds</option>
+        <option value="Pesticides" {{ 'selected' if product and product.category == 'Pesticides' else '' }}>Pesticides</option>
+        <option value="Equipment" {{ 'selected' if product and product.category == 'Equipment' else '' }}>Equipment</option>
+        <option value="Tools" {{ 'selected' if product and product.category == 'Tools' else '' }}>Tools</option>
+      </select>
+    </div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Product Image</label>
+    <input type="file" name="product_image" class="form-control" accept="image/*">
+    {% if product and product.image_path %}<p class="small text-muted">Current image set. Upload new to replace.</p>{% endif %}
+  </div>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Brand Name</label>
+      <input type="text" name="brand" class="form-control" value="{{ product.brand if product else '' }}">
+    </div>
+    <div class="col-md-3 mb-3">
+      <label class="form-label">Price *</label>
+      <input type="number" step="0.01" name="price" class="form-control" value="{{ product.price if product else '' }}" required>
+    </div>
+    <div class="col-md-3 mb-3">
+      <label class="form-label">Discount (%)</label>
+      <input type="number" step="0.01" name="discount" class="form-control" value="{{ product.discount if product else 0 }}">
+    </div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Stock Quantity</label>
+    <input type="number" name="stock" class="form-control" value="{{ product.stock if product else 0 }}">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Description</label>
+    <textarea name="description" class="form-control" rows="2">{{ product.description if product else '' }}</textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Usage Crops</label>
+    <input type="text" name="usage_crops" class="form-control" value="{{ product.usage_crops if product else '' }}" placeholder="Comma separated">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Nutrient Composition (optional)</label>
+    <textarea name="nutrient_composition" class="form-control" rows="2">{{ product.nutrient_composition if product else '' }}</textarea>
+  </div>
+  <button type="submit" class="btn btn-success">{{ 'Update' if product else 'Add' }} Product</button>
+  <a href="{{ url_for('store.admin_list') }}" class="btn btn-outline-secondary">Cancel</a>
+</form>
+{% endblock %}

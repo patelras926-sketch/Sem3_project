@@ -1,0 +1,43 @@
+{% extends "farmer/base_farmer.html" %}
+{% block title %}{{ crop.name }} – FarmIntel{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="{{ url_for('crops.list_crops') }}">Crops</a></li><li class="breadcrumb-item active">{{ crop.name }}</li></ol></nav>
+<h2 class="mb-4">{{ crop.name }}</h2>
+<div class="row">
+  <div class="col-lg-5 mb-4">
+    {% if images %}
+      <div id="cropCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          {% for img in images %}
+          <div class="carousel-item {{ 'active' if loop.first else '' }}">
+            <img src="{{ url_for('static', filename=img) }}" class="d-block w-100 rounded" style="max-height:360px;object-fit:cover" alt="{{ crop.name }}">
+          </div>
+          {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#cropCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon"></span></button>
+        <button class="carousel-control-next" type="button" data-bs-target="#cropCarousel" data-bs-slide="next"><span class="carousel-control-next-icon"></span></button>
+      </div>
+    {% else %}
+      <img src="https://via.placeholder.com/400x300?text={{ crop.name }}" class="img-fluid rounded" alt="{{ crop.name }}">
+    {% endif %}
+  </div>
+  <div class="col-lg-7">
+    <table class="table table-bordered">
+      <tr><th>Season</th><td>{{ crop.season or '–' }}</td></tr>
+      <tr><th>Soil Type</th><td>{{ crop.soil_type or '–' }}</td></tr>
+      <tr><th>Category</th><td>{{ crop.category or '–' }}</td></tr>
+      <tr><th>Duration</th><td>{{ crop.duration or '–' }}</td></tr>
+      <tr><th>Average Price</th><td>₹{{ "%.2f"|format(crop.average_price or 0) }}</td></tr>
+      <tr><th>Current Market Price</th><td>₹{{ "%.2f"|format(crop.market_price or 0) }}</td></tr>
+      <tr><th>India Demand</th><td>{{ crop.india_demand or '–' }}</td></tr>
+    </table>
+    {% if crop.description %}<p class="text-muted">{{ crop.description }}</p>{% endif %}
+    <hr>
+    <h5>Recommended Inputs</h5>
+    <p><strong>Fertilizer:</strong> {{ crop.fertilizer_name or '–' }}</p>
+    <p><strong>Pesticides:</strong> {{ crop.pesticides_name or '–' }}</p>
+    <p><strong>Best Seeds:</strong> {{ crop.best_seeds_name or '–' }}</p>
+    <a href="{{ url_for('store.product_list') }}" class="btn btn-success">Buy from Farm Store</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "farmer/base_farmer.html" %}
+{% block title %}Crops – FarmIntel{% endblock %}
+{% block content %}
+<h2 class="mb-4">Crops</h2>
+<div class="row mb-3">
+  <div class="col-md-6">
+    <input type="text" id="searchCrop" class="form-control" placeholder="Search crop by name">
+  </div>
+  <div class="col-md-2">
+    <select id="filterSeason" class="form-select">
+      <option value="">All Seasons</option>
+      <option value="Kharif">Kharif</option>
+      <option value="Rabi">Rabi</option>
+      <option value="Zaid">Zaid</option>
+    </select>
+  </div>
+  <div class="col-md-2">
+    <select id="filterSoil" class="form-select">
+      <option value="">All Soil</option>
+      <option value="well_drained">Well-drained soil</option>
+      <option value="loamy">Loamy Soil</option>
+      <option value="sandy_loam">Sandy Loam</option>
+      <option value="black_soil">Black Soil</option>
+    </select>
+  </div>
+  <div class="col-md-2">
+    <select id="filterCategory" class="form-select">
+      <option value="">All Categories</option>
+      <option value="Spices">Spices</option>
+      <option value="Vegetables">Vegetables</option>
+      <option value="Pulses">Pulses</option>
+      <option value="Oil Seeds">Oil Seeds</option>
+      <option value="Fruits">Fruits</option>
+    </select>
+  </div>
+</div>
+<div class="row g-3" id="cropCards">
+  {% for c in crops %}
+  <div class="col-sm-6 col-lg-4 crop-card" data-name="{{ c.name|lower }}" data-season="{{ c.season or '' }}" data-soil="{{ (c.soil_type or '')|lower }}" data-category="{{ c.category or '' }}">
+    <div class="card h-100 shadow-sm">
+      {% if c.first_image %}
+        <img src="{{ url_for('static', filename=c.first_image) }}" class="card-img-top" alt="{{ c.name }}" style="height:180px;object-fit:cover" onerror="this.src='https://via.placeholder.com/300x180?text=Crop'">
+      {% else %}
+        <img src="https://via.placeholder.com/300x180?text={{ c.name }}" class="card-img-top" alt="{{ c.name }}" style="height:180px;object-fit:cover">
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">{{ c.name }}</h5>
+        <p class="mb-1 small"><span class="badge bg-secondary">{{ c.season or '–' }}</span> <span class="badge bg-info">{{ c.soil_type or '–' }}</span></p>
+        <p class="mb-1">Market: ₹{{ "%.2f"|format(c.market_price or 0) }} | Demand: {{ c.india_demand or '–' }}</p>
+        <a href="{{ url_for('crops.crop_detail', crop_id=c.id) }}" class="btn btn-success btn-sm">View Details</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<script>
+(function(){
+  var cards = document.querySelectorAll('.crop-card');
+  var search = document.getElementById('searchCrop');
+  var season = document.getElementById('filterSeason');
+  var soil = document.getElementById('filterSoil');
+  var cat = document.getElementById('filterCategory');
+  
+  // Soil value mapping
+  var soilMap = {
+    'well_drained': 'well-drained',
+    'loamy': 'loamy',
+    'sandy_loam': 'sandy loam',
+    'black_soil': 'black soil'
+  };
+  
+  function filter(){
+    var s = (search.value || '').toLowerCase();
+    var se = season.value;
+    var so = soil.value;
+    var ca = cat.value;
+    cards.forEach(function(c){
+      var name = (c.dataset.name || '').indexOf(s) >= 0;
+      var seasonOk = !se || c.dataset.season === se;
+      var soilOk = !so || (c.dataset.soil || '').indexOf(soilMap[so] || so) >= 0;
+      var catOk = !ca || c.dataset.category === ca;
+      c.style.display = (name && seasonOk && soilOk && catOk) ? '' : 'none';
+    });
+  }
+  search.addEventListener('input', filter);
+  season.addEventListener('change', filter);
+  soil.addEventListener('change', filter);
+  cat.addEventListener('change', filter);
+})();
+</script>
+{% endblock %}

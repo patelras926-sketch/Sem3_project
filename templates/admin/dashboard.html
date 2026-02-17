@@ -1,0 +1,34 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Admin Dashboard – FarmIntel{% endblock %}
+{% block content %}
+<h2 class="mb-4">Admin Dashboard</h2>
+<div class="row g-3">
+  <div class="col-md-4">
+    <div class="card border-primary">
+      <div class="card-body">
+        <h5 class="card-title">Crop Management</h5>
+        <p class="card-text">Add, edit, delete crops. Activate/deactivate.</p>
+        <a href="{{ url_for('crops.admin_list') }}" class="btn btn-outline-primary">Manage Crops</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-success">
+      <div class="card-body">
+        <h5 class="card-title">Government Schemes</h5>
+        <p class="card-text">Add, edit, delete schemes.</p>
+        <a href="{{ url_for('schemes.admin_list') }}" class="btn btn-outline-success">Manage Schemes</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card border-warning">
+      <div class="card-body">
+        <h5 class="card-title">Farm Store Products</h5>
+        <p class="card-text">Add, edit, delete products. Manage stock.</p>
+        <a href="{{ url_for('store.admin_list') }}" class="btn btn-outline-warning">Manage Products</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

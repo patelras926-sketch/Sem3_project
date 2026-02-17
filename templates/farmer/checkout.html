@@ -1,0 +1,33 @@
+{% extends "farmer/base_farmer.html" %}
+{% block title %}Checkout – Farm Store{% endblock %}
+{% block content %}
+<h2 class="mb-4">Checkout</h2>
+<table class="table table-bordered mb-4">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Price</th>
+      <th>Qty</th>
+      <th>Subtotal</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for it in items %}
+    <tr>
+      <td>{{ it.name }}</td>
+      <td>₹{{ "%.2f"|format(it.price|float * (1 - (it.discount or 0)|float/100)) }}</td>
+      <td>{{ it.quantity }}</td>
+      <td>₹{{ "%.2f"|format((it.price|float * (1 - (it.discount or 0)|float/100)) * it.quantity) }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p><strong>Farmer:</strong> {{ user.name }}</p>
+<p><strong>Subtotal:</strong> ₹{{ "%.2f"|format(subtotal) }} | <strong>GST (5%):</strong> ₹{{ "%.2f"|format(gst) }} |
+  <strong>Total:</strong> ₹{{ "%.2f"|format(total) }}
+</p>
+<form method="post" action="{{ url_for('store.checkout') }}">
+  <button type="submit" class="btn btn-success">Place Order</button>
+  <a href="{{ url_for('store.cart_view') }}" class="btn btn-outline-secondary">Back to Cart</a>
+</form>
+{% endblock %}

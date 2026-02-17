@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="auth-page admin-auth">
+  <div class="container">
+    <div class="card auth-card signup-card mx-auto" style="max-width: 540px;">
+      <div class="card-body">
+        <h1 class="auth-logo text-center">FarmIntel Admin</h1>
+        <p class="auth-subtitle text-center">Create Admin Account</p>
+        <p class="auth-note text-center mb-4"><span class="badge bg-secondary">Only Authorized Persons</span></p>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}{% for c, m in messages %}<div class="alert alert-{{ c }}">{{ m }}</div>{% endfor %}{% endif %}
+        {% endwith %}
+        <form method="post" action="{{ url_for('auth.admin_signup') }}" novalidate>
+          <div class="mb-3">
+            <label class="form-label">Admin Name *</label>
+            <input type="text" name="name" class="form-control" required minlength="2" maxlength="150" placeholder="Full name" pattern="[\w\s.\'-]+" title="Letters, spaces, hyphens and apostrophe only" autocomplete="name">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email ID *</label>
+            <input type="email" name="email" class="form-control" required maxlength="120" placeholder="admin@example.com" autocomplete="email">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Mobile Number</label>
+            <input type="tel" name="mobile" class="form-control" placeholder="e.g. 9876543210" pattern="(\+91|0)?[6-9]\d{9}" title="Valid 10-digit Indian mobile" maxlength="14" autocomplete="tel">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Role</label>
+            <select name="admin_role" class="form-select">
+              <option value="Super Admin">Super Admin</option>
+              <option value="Data Manager">Data Manager</option>
+            </select>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Password *</label>
+              <input type="password" name="password" class="form-control" required minlength="6" placeholder="••••••••" title="Min 6 chars, one letter and one number" autocomplete="new-password">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Confirm Password *</label>
+              <input type="password" name="confirm_password" class="form-control" required minlength="6" placeholder="••••••••" autocomplete="new-password">
+            </div>
+          </div>
+          <div class="d-flex flex-wrap gap-2 align-items-center mt-3">
+            <button type="submit" class="btn btn-register">Create Account</button>
+            <a href="{{ url_for('admin_routes.admin_login_page') }}" class="btn btn-outline-secondary">Already have account? Login</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

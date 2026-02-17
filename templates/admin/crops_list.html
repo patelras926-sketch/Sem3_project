@@ -1,0 +1,33 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Crop Management – FarmIntel Admin{% endblock %}
+{% block content %}
+<h2 class="mb-4">Crop Management</h2>
+<p><a href="{{ url_for('crops.admin_add') }}" class="btn btn-success">+ Add Crop</a></p>
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead><tr><th>Image</th><th>Name</th><th>Category</th><th>Season</th><th>Market Price</th><th>Demand</th><th>Active</th><th>Actions</th></tr></thead>
+    <tbody>
+    {% for c in crops %}
+    <tr>
+      <td>
+        {% if c.first_image %}
+          <img src="{{ url_for('static', filename=c.first_image) }}" width="50" height="50" style="object-fit:cover" onerror="this.style.display='none'">
+        {% else %}–{% endif %}
+      </td>
+      <td>{{ c.name }}</td>
+      <td>{{ c.category }}</td>
+      <td>{{ c.season }}</td>
+      <td>₹{{ "%.2f"|format(c.market_price or 0) }}</td>
+      <td>{{ c.india_demand or '–' }}</td>
+      <td>{{ 'Yes' if c.active else 'No' }}</td>
+      <td>
+        <a href="{{ url_for('crops.admin_edit', crop_id=c.id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+        <form method="post" action="{{ url_for('crops.admin_toggle', crop_id=c.id) }}" class="d-inline"><button type="submit" class="btn btn-sm btn-outline-warning">{{ 'Deactivate' if c.active else 'Activate' }}</button></form>
+        <form method="post" action="{{ url_for('crops.admin_delete', crop_id=c.id) }}" class="d-inline" onsubmit="return confirm('Delete this crop?');"><button type="submit" class="btn btn-sm btn-outline-danger">Delete</button></form>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

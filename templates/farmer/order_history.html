@@ -1,0 +1,20 @@
+{% extends "farmer/base_farmer.html" %}
+{% block title %}Order History – Farm Store{% endblock %}
+{% block content %}
+<h2 class="mb-4">Order History</h2>
+<table class="table table-bordered">
+  <thead><tr><th>Order ID</th><th>Date</th><th>Total</th><th>Status</th><th></th></tr></thead>
+  <tbody>
+  {% for o in orders %}
+  <tr>
+    <td>{{ o.id }}</td>
+    <td>{{ o.order_date }}</td>
+    <td>₹{{ "%.2f"|format(o.total) }}</td>
+    <td>{{ o.status }}</td>
+    <td><a href="{{ url_for('store.order_invoice', order_id=o.id) }}" class="btn btn-sm btn-outline-primary">View Invoice</a></td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% if not orders %}<p class="text-muted">No orders yet.</p>{% endif %}
+{% endblock %}

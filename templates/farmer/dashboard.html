@@ -1,0 +1,91 @@
+{% extends "farmer/base_farmer.html" %}
+{% block title %}Dashboard – FarmIntel{% endblock %}
+{% block content %}
+<h1 class="dashboard-welcome">Hello {{ session.get('name', 'Farmer') }}! Welcome</h1>
+<p class="dashboard-date">Today's Date: <span id="todayDate">Loading...</span></p>
+
+<div class="row g-3 mb-4">
+  <div class="col-sm-6 col-lg-4 col-xl-3">
+    <a href="{{ url_for('crops.list_crops') }}" class="dashboard-card">
+      <div class="card-icon icon-green"><i class="bi bi-flower2"></i></div>
+      <h5 class="card-title">Crops</h5>
+      <p class="card-subtitle">Crop Advice & Market Price</p>
+    </a>
+  </div>
+  <div class="col-sm-6 col-lg-4 col-xl-3">
+    <a href="{{ url_for('schemes.list_schemes') }}" class="dashboard-card">
+      <div class="card-icon icon-red"><i class="bi bi-bank"></i></div>
+      <h5 class="card-title">Schemes</h5>
+      <p class="card-subtitle">Government Schemes & Benefits</p>
+    </a>
+  </div>
+  <div class="col-sm-6 col-lg-4 col-xl-3">
+    <a href="{{ url_for('store.product_list') }}" class="dashboard-card">
+      <div class="card-icon icon-yellow"><i class="bi bi-cart3"></i></div>
+      <h5 class="card-title">Farm Store</h5>
+      <p class="card-subtitle">Fertilizers, Seeds & Equipment</p>
+    </a>
+  </div>
+  <div class="col-sm-6 col-lg-4 col-xl-3">
+    <a href="{{ url_for('store.cart_view') }}" class="dashboard-card">
+      <div class="card-icon icon-teal"><i class="bi bi-basket"></i></div>
+      <h5 class="card-title">Cart</h5>
+      <p class="card-subtitle">View & Checkout</p>
+    </a>
+  </div>
+  <div class="col-sm-6 col-lg-4 col-xl-3">
+    <a href="{{ url_for('store.order_history') }}" class="dashboard-card">
+      <div class="card-icon icon-blue"><i class="bi bi-receipt"></i></div>
+      <h5 class="card-title">Orders</h5>
+      <p class="card-subtitle">Order History & Invoices</p>
+    </a>
+  </div>
+  <div class="col-sm-6 col-lg-4 col-xl-3">
+    <a href="{{ url_for('financial.dashboard') }}" class="dashboard-card">
+      <div class="card-icon icon-indigo"><i class="bi bi-graph-up-arrow"></i></div>
+      <h5 class="card-title">Financial Analysis</h5>
+      <p class="card-subtitle">Expense, Income & Profit</p>
+    </a>
+  </div>
+</div>
+
+<h2 class="tips-heading"><i class="bi bi-lightbulb"></i> Today's Tips</h2>
+<div class="row g-3">
+  <div class="col-md-6 col-lg-3">
+    <div class="tip-card">
+      <span class="tip-label label-blue">Irrigation</span>
+      <h6 class="tip-title">Optimal Watering Time</h6>
+      <p class="tip-desc">Water crops early morning or late evening to reduce evaporation. Drip irrigation saves water and improves yield.</p>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-3">
+    <div class="tip-card">
+      <span class="tip-label label-teal">Fertilizer</span>
+      <h6 class="tip-title">Balanced Nutrient Use</h6>
+      <p class="tip-desc">Use soil test results to apply the right amount of N, P, K. Over-fertilization can damage soil and crops.</p>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-3">
+    <div class="tip-card">
+      <span class="tip-label label-indigo">Pest Control</span>
+      <h6 class="tip-title">Safe Pest Management</h6>
+      <p class="tip-desc">Prefer integrated pest management. Use recommended pesticides from Crop Details and follow dosage instructions.</p>
+    </div>
+  </div>
+  <div class="col-md-6 col-lg-3">
+    <div class="tip-card">
+      <span class="tip-label label-green">Seed Selection</span>
+      <h6 class="tip-title">Quality Seeds</h6>
+      <p class="tip-desc">Choose certified seeds suited to your soil and season. Check Crops section for best seed names per crop.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var d = new Date();
+  var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  document.getElementById('todayDate').textContent = d.toLocaleDateString('en-IN', options);
+})();
+</script>
+{% endblock %}

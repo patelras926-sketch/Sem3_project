@@ -1,0 +1,28 @@
+{% extends "farmer/base_farmer.html" %}
+{% block title %}{{ product.name }} – Farm Store{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="{{ url_for('store.product_list') }}">Store</a></li><li class="breadcrumb-item active">{{ product.name }}</li></ol></nav>
+<div class="row">
+  <div class="col-lg-5 mb-4">
+    {% if product.image_path %}
+      <img src="{{ url_for('static', filename=product.image_path) }}" class="img-fluid rounded shadow" alt="{{ product.name }}" onerror="this.src='https://via.placeholder.com/400x300?text=Product'">
+    {% else %}
+      <img src="https://via.placeholder.com/400x300?text={{ product.name }}" class="img-fluid rounded" alt="{{ product.name }}">
+    {% endif %}
+  </div>
+  <div class="col-lg-7">
+    <h2>{{ product.name }}</h2>
+    <p class="text-muted">{{ product.category }} {% if product.brand %}• {{ product.brand }}{% endif %}</p>
+    <h4 class="text-success">₹{{ "%.2f"|format(product.price) }}{% if product.discount %} <span class="text-danger fs-6">({{ product.discount }}% off)</span>{% endif %}</h4>
+    <p class="mb-2">Stock: {{ product.stock }}</p>
+    {% if product.description %}<p>{{ product.description }}</p>{% endif %}
+    {% if product.usage_crops %}<p><strong>Usage Crops:</strong> {{ product.usage_crops }}</p>{% endif %}
+    {% if product.nutrient_composition %}<p><strong>Nutrient:</strong> {{ product.nutrient_composition }}</p>{% endif %}
+    <form method="post" action="{{ url_for('store.cart_add') }}" class="row g-2 align-items-center">
+      <input type="hidden" name="product_id" value="{{ product.id }}">
+      <div class="col-auto"><label>Qty</label><input type="number" name="quantity" value="1" min="1" max="{{ product.stock }}" class="form-control" style="width:80px"></div>
+      <div class="col-auto"><button type="submit" class="btn btn-success mt-4">Add to Cart</button></div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "farmer/base_farmer.html" %}
+{% block title %}Government Schemes – FarmIntel{% endblock %}
+{% block content %}
+<h2 class="mb-4">Government Schemes</h2>
+<div class="row g-3">
+  {% for s in schemes %}
+  <div class="col-12">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">{{ s.name }} <span class="badge bg-{{ 'success' if s.scheme_type == 'Central' else 'primary' }}">{{ s.scheme_type }}</span></h5>
+        <p class="mb-1"><strong>Eligible Crop:</strong> {{ s.eligible_crop or '–' }}</p>
+        <p class="mb-1"><strong>Eligibility:</strong> {{ s.eligibility_criteria or '–' }}</p>
+        <p class="mb-1"><strong>Benefits:</strong> {{ s.benefits or '–' }}</p>
+        <p class="mb-1"><strong>Required Documents:</strong> {{ s.required_documents or '–' }}</p>
+        {% if s.apply_link %}
+        <a href="{{ s.apply_link }}" target="_blank" class="btn btn-outline-primary btn-sm">Apply / Office Details</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <p class="text-muted">No active schemes at the moment.</p>
+  {% endfor %}
+</div>
+{% endblock %}

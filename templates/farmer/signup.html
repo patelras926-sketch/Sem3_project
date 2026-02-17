@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="auth-page">
+  <div class="container">
+    <div class="card auth-card signup-card mx-auto">
+      <div class="card-body">
+        <h1 class="auth-logo text-center">🌾 FarmIntel</h1>
+        <p class="auth-subtitle text-center">Create Farmer Account – Smart Farming & Crop Intelligence</p>
+        <p class="auth-note text-center">તમારી ખેતીને ટેકનોલોજી સાથે જોડો 🚜📊</p>
+        <p class="auth-note text-center mb-4">તમારી માહિતી સુરક્ષિત રહેશે અને માત્ર ખેતી સંબંધિત સૂચન માટે વપરાશે.</p>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}{% for c, m in messages %}<div class="alert alert-{{ c }}">{{ m }}</div>{% endfor %}{% endif %}
+        {% endwith %}
+        <form method="post" action="{{ url_for('auth.farmer_signup') }}" novalidate>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Farmer Full Name *</label>
+              <input type="text" name="name" class="form-control" required minlength="2" maxlength="150" placeholder="Full name" pattern="[\w\s.\'-]+" title="Letters, spaces, hyphens and apostrophe only" autocomplete="name">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Mobile Number *</label>
+              <input type="tel" name="mobile" class="form-control" required placeholder="e.g. 9876543210" pattern="(\+91|0)?[6-9]\d{9}" title="Valid 10-digit Indian mobile number" maxlength="14" autocomplete="tel">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email ID *</label>
+            <input type="email" name="email" class="form-control" required maxlength="120" placeholder="email@example.com" autocomplete="email">
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Village</label>
+              <input type="text" name="village" class="form-control" placeholder="Village">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Taluka</label>
+              <input type="text" name="taluka" class="form-control" placeholder="Taluka">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">District</label>
+              <input type="text" name="district" class="form-control" placeholder="District">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Land Area (Acre)</label>
+              <input type="number" step="0.01" min="0" max="99999" name="land_area" class="form-control" placeholder="0.00">
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Soil Type (કાળી / લાલ / રેતાળી)</label>
+              <select name="soil_type" class="form-select">
+                <option value="">-- Select --</option>
+                <option value="કાળી">કાળી</option>
+                <option value="લાલ">લાલ</option>
+                <option value="રેતાળી">રેતાળી</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label class="form-label">Water Availability (ઓછું / મધ્યમ / વધુ)</label>
+              <select name="water_availability" class="form-select">
+                <option value="">-- Select --</option>
+                <option value="ઓછું">ઓછું</option>
+                <option value="મધ્યમ">મધ્યમ</option>
+                <option value="વધુ">વધુ</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Password *</label>
+              <input type="password" name="password" class="form-control" required minlength="6" placeholder="At least 6 chars, one letter and one number" title="Minimum 6 characters, at least one letter and one number" autocomplete="new-password">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Confirm Password *</label>
+              <input type="password" name="confirm_password" class="form-control" required minlength="6" placeholder="••••••••" autocomplete="new-password">
+            </div>
+          </div>
+          <div class="d-flex flex-wrap gap-2 align-items-center mt-3">
+            <button type="submit" class="btn btn-register">Register</button>
+            <a href="{{ url_for('farmer.login_page') }}" class="btn btn-outline-secondary">Already have an account? Login</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

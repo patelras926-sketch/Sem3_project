@@ -1,0 +1,40 @@
+{% extends "farmer/base_farmer.html" %}
+{% block title %}Financial Analysis – FarmIntel{% endblock %}
+{% block content %}
+<h2 class="mb-4">Financial Analysis</h2>
+<p>
+  <a href="{{ url_for('financial.add_record') }}" class="btn btn-success">+ Add New Record</a>
+  {% if records %}
+  <a href="{{ url_for('financial.download_csv') }}" class="btn btn-outline-primary ms-2">Download CSV</a>
+  {% endif %}
+</p>
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead><tr><th>Crop</th><th>Season</th><th>Total Expense</th><th>Total Income</th><th>Net Profit</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>
+    {% for r in records %}
+    <tr>
+      <td>{{ r.crop_name }}</td>
+      <td>{{ r.season or '–' }}</td>
+      <td>₹{{ "%.2f"|format(r.total_expense) }}</td>
+      <td>₹{{ "%.2f"|format(r.total_income) }}</td>
+      <td>₹{{ "%.2f"|format(r.net_profit) }}</td>
+      <td>
+        {% if r.status == 'Profit' %}✅ Profit
+        {% elif r.status == 'Loss' %}❌ Loss
+        {% else %}➖ No Profit No Loss
+        {% endif %}
+      </td>
+      <td>
+        <a href="{{ url_for('financial.edit_record', record_id=r.id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+        <form method="post" action="{{ url_for('financial.delete_record', record_id=r.id) }}" class="d-inline" onsubmit="return confirm('Delete this record?');">
+          <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% if not records %}<p class="text-muted">No financial records. Add one to see expense, income and profit/loss.</p>{% endif %}
+{% endblock %}

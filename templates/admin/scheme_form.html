@@ -1,0 +1,49 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}{{ 'Edit' if scheme else 'Add' }} Scheme – FarmIntel Admin{% endblock %}
+{% block content %}
+<h2 class="mb-4">{{ 'Edit' if scheme else 'Add' }} Government Scheme</h2>
+<form method="post" action="{{ url_for('schemes.admin_edit', scheme_id=scheme.id) if scheme else url_for('schemes.admin_add') }}">
+  <div class="mb-3">
+    <label class="form-label">Scheme Name *</label>
+    <input type="text" name="name" class="form-control" value="{{ scheme.name if scheme else '' }}" required>
+  </div>
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Scheme Type</label>
+      <select name="scheme_type" class="form-select">
+        <option value="Central" {{ 'selected' if scheme and scheme.scheme_type == 'Central' else '' }}>Central</option>
+        <option value="State" {{ 'selected' if scheme and scheme.scheme_type == 'State' else '' }}>State</option>
+      </select>
+    </div>
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Eligible Crop</label>
+      <input type="text" name="eligible_crop" class="form-control" value="{{ scheme.eligible_crop if scheme else '' }}">
+    </div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Eligibility Criteria</label>
+    <textarea name="eligibility_criteria" class="form-control" rows="2">{{ scheme.eligibility_criteria if scheme else '' }}</textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Benefits</label>
+    <textarea name="benefits" class="form-control" rows="2">{{ scheme.benefits if scheme else '' }}</textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Required Documents</label>
+    <textarea name="required_documents" class="form-control" rows="2">{{ scheme.required_documents if scheme else '' }}</textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Apply Link / Office Details</label>
+    <input type="url" name="apply_link" class="form-control" value="{{ scheme.apply_link if scheme else '' }}">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Status</label>
+    <select name="status" class="form-select">
+      <option value="Active" {{ 'selected' if scheme and scheme.status == 'Active' else '' }}>Active</option>
+      <option value="Inactive" {{ 'selected' if scheme and scheme.status == 'Inactive' else '' }}>Inactive</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-success">{{ 'Update' if scheme else 'Add' }} Scheme</button>
+  <a href="{{ url_for('schemes.admin_list') }}" class="btn btn-outline-secondary">Cancel</a>
+</form>
+{% endblock %}

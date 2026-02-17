@@ -1,0 +1,46 @@
+{% extends "farmer/base_farmer.html" %}
+{% block title %}Cart – Farm Store{% endblock %}
+{% block content %}
+<h2 class="mb-4">Cart</h2>
+{% if items %}
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Price</th>
+      <th>Qty</th>
+      <th>Subtotal</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for it in items %}
+    <tr>
+      <td>{{ it.name }}</td>
+      <td>₹{{ "%.2f"|format(it.price) }}{% if it.discount %} ({{ it.discount }}% off){% endif %}</td>
+      <td>
+        <form method="post" action="{{ url_for('store.cart_update') }}" class="d-inline">
+          <input type="hidden" name="cart_id" value="{{ it.id }}">
+          <input type="number" name="quantity" value="{{ it.quantity }}" min="0" max="{{ it.stock }}"
+            class="form-control form-control-sm d-inline-block" style="width:70px">
+          <button type="submit" class="btn btn-sm btn-outline-secondary">Update</button>
+        </form>
+      </td>
+      <td>₹{{ "%.2f"|format((it.price * (1 - (it.discount or 0)/100)) * it.quantity) }}</td>
+      <td>
+        <form method="post" action="{{ url_for('store.cart_update') }}" class="d-inline">
+          <input type="hidden" name="cart_id" value="{{ it.id }}">
+          <input type="hidden" name="quantity" value="0">
+          <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a href="{{ url_for('store.checkout') }}" class="btn btn-success">Proceed to Checkout</a>
+{% else %}
+<p class="text-muted">Your cart is empty.</p>
+<a href="{{ url_for('store.product_list') }}" class="btn btn-outline-success">Browse Store</a>
+{% endif %}
+{% endblock %}
